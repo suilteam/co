@@ -6,7 +6,7 @@
 
 class fastring : public fast::stream {
   public:
-    static const size_t npos = (size_t)-1;
+    static constexpr size_t npos = (size_t)-1;
 
     constexpr fastring() noexcept
         : fast::stream() {

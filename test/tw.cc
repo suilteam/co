@@ -20,7 +20,7 @@ int64 QS(const char* s, int64 n, const char* x, int64 m) {
     int64 j = 0;
     while (j <= n - m) {
         if (memcmp(x, s + j, m) == 0) return j;
-        int64 x = tbl[s[j + m]];
+        int64 x = tbl[uint32(s[j + m])];
         if (x == 0) x = m + 1;
         j += x;
     }

@@ -1,12 +1,22 @@
-file(GLOB SRC_FILES *.cc)
+set(SOURCE_FILES
+    atomic.cc
+    co.cc
+    fast.cc
+    fastream.cc
+    fastring.cc
+    fs.cc
+    json.cc
+    lru_map.cc
+    main.cc
+    os.cc
+    path.cc
+    random.cc
+    str.cc
+    thread.cc
+    time.cc)
 
-add_executable(unitest ${SRC_FILES})
-
-list(APPEND LIBS_TO_LINK co)
+add_executable(unittest ${SOURCE_FILES})
+target_link_libraries(unittest co)
 if(UNIX)
-    list(APPEND LIBS_TO_LINK pthread dl)
+    target_link_libraries(unittest pthread dl)
 endif()
-
-target_link_libraries(unitest
-    ${LIBS_TO_LINK}
-)

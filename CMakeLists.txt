@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.16)
 project(co)
 
 if(WIN32)
@@ -10,12 +10,14 @@ else()
     enable_language(C CXX ASM)
 endif()
 
-set(CMAKE_CXX_STANDARD 11)
-option(BUILD_SHARED_LIBS "Let us build static libs" OFF)
+# Configure for C++20
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build/lib)
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build/lib)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build/bin)
+option(BUILD_SHARED_LIBS  "Let us build static libs" OFF)
+option(ENABLE_UNITTESTS   "Set to enable/disable building unit tests"  ON)
+option(ENABLE_SYSTEM_TEST "Set to enable/disable building unit tests " ON)
 
 set(CMAKE_DEBUG_POSTFIX "d")
 
@@ -35,28 +37,14 @@ endif()
 
 add_subdirectory(src)
 
-option(BUILD_ALL "To build All" OFF)
-option(BUILD_GEN "To build gen" ON)
-option(BUILD_UNITEST "To build unitest" OFF)
-option(BUILD_TEST "To build test" OFF)
+if(ENABLE_UNITTESTS)
+    add_subdirectory(unitest)
+endif()
 
-if(BUILD_ALL)
-    message("To build all")
-    add_subdirectory(gen)
-    add_subdirectory(unitest)
-    add_subdirectory(test)
-elseif(BUILD_GEN)
-    message("To build gen")
-    add_subdirectory(gen)
-elseif(BUILD_UNITEST)
-    message("To build unitest")
-    add_subdirectory(unitest)
-elseif(BUILD_TEST)
-    message("To build test")
+if (ENABLE_SYSTEM_TEST)
     add_subdirectory(test)
 endif()
 
 install(
     DIRECTORY include/co
-    DESTINATION include
-)
+    DESTINATION include)

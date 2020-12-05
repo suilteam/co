@@ -129,14 +129,14 @@ template<typename K, typename V>
 inline fastring dbg(const std::pair<K, V>& x) {
     fastring fs(64);
     xx::dbg(x, fs);
-    return std::move(fs);
+    return fs;
 }
 
 template<typename T>
 inline fastring dbg(const T& beg, const T& end, char c1, char c2) {
     fastring fs(128);
     xx::dbg(beg, end, c1, c2, fs);
-    return std::move(fs);
+    return fs;
 }
 
 template<typename T>

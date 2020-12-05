@@ -41,8 +41,8 @@ class LruMap {
     }
 
     // The key is not inserted if it already exists.
-    void insert(const K& key, const V& value) {
-        auto r = _kv.insert(std::make_pair(key, value));
+    void insert(K&& key, V&& value) {
+        auto r = _kv.emplace(std::forward<K>(key), std::forward<V>(value));
         if (!r.second) return;
 
         _kl.push_front(key);

@@ -328,7 +328,7 @@ class Value {
     fastring dbg() const {
         fastring s(256);
         this->_Json2dbg(*(fastream*)&s);
-        return std::move(s);
+        return s;
     }
 
     void dbg(fastream& fs) const {
@@ -339,7 +339,7 @@ class Value {
     fastring pretty(int indent = 4) const {
         fastring s(256);
         this->_Json2pretty(indent, indent, *(fastream*)&s);
-        return std::move(s);
+        return s;
     }
 
     bool parse_from(const char* s, size_t n);

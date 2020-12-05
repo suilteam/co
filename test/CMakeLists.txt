@@ -3,20 +3,28 @@ if(UNIX)
     list(APPEND LIBS_TO_LINK pthread dl)
 endif()
 
-file(GLOB_RECURSE ALL_TEST_FILES "*.cc")
+set(TEST_SOURCES
+        co.cc
+        fast.cc
+        flag.cc
+        hash.cc
+        json.cc
+        log.cc
+        stack.cc
+        str.cc
+        task_sched.cc
+        time.cc
+        tw.cc
+        xx.cc)
 
-foreach(TEST_FILE ${ALL_TEST_FILES})
-    get_filename_component(TEST_FILE_NAME ${TEST_FILE} NAME)
-    string(REPLACE ".cc" "" TEST_TARGET ${TEST_FILE_NAME})
-    message("  - ${TEST_FILE} --> ${TEST_TARGET}")
 
-    add_executable(${TEST_TARGET}_test ${TEST_FILE})
+foreach(source ${TEST_SOURCES})
+    get_filename_component(name ${source} NAME_WE)
+    add_executable(${name}_test ${source})
 
-    set_target_properties(${TEST_TARGET}_test
-        PROPERTIES OUTPUT_NAME ${TEST_TARGET}
-    )
+    set_target_properties(${name}_test
+        PROPERTIES
+            OUTPUT_NAME ${name})
 
-    target_link_libraries(${TEST_TARGET}_test
-        ${LIBS_TO_LINK}
-    )
-endforeach(TEST_FILE ${ALL_TEST_FILES})
+    target_link_libraries(${name}_test co pthread dl)
+endforeach()

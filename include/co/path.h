@@ -39,7 +39,7 @@ inline fastring join(const S&... s) {
 // The returned values have the property that path = dir+file.
 inline std::pair<fastring, fastring> split(const fastring& s) {
     size_t p = s.rfind('/');
-    if (p == s.npos) return std::make_pair(fastring(), s);
+    if (p == fastring::npos) return std::make_pair(fastring(), s);
     return std::make_pair(s.substr(0, p + 1), s.substr(p + 1));
 };
 
