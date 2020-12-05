@@ -13,15 +13,15 @@
 
 ## 亮点功能
 
-- **[co](https://github.com/idealvin/co/tree/master/src/co)**
+- **[co](https://github.com/suilteam/co/tree/master/src/co)**
 
   `co` 是一个 [golang](https://github.com/golang/go) 风格的 C++ 协程库，有如下特性:
   - 支持多线程调度，默认线程数为系统 CPU 核数.
   - 协程共享线程栈(默认大小为 1MB)，内存占用极低，单机可轻松创建数百万协程.
   - 支持系统 api hook (Linux & Mac).
-  - 支持协程锁 [co::Mutex](https://github.com/idealvin/co/blob/master/src/co/impl/co.cc).
-  - 支持协程同步事件 [co::Event](https://github.com/idealvin/co/blob/master/src/co/impl/co.cc).
-  - 支持协程池 [co::Pool](https://github.com/idealvin/co/blob/master/src/co/impl/co.cc).
+  - 支持协程锁 [co::Mutex](https://github.com/suilteam/co/blob/master/src/co/impl/co.cc).
+  - 支持协程同步事件 [co::Event](https://github.com/suilteam/co/blob/master/src/co/impl/co.cc).
+  - 支持协程池 [co::Pool](https://github.com/suilteam/co/blob/master/src/co/impl/co.cc).
 
   - 用 `go()` 创建协程:
   ```cpp
@@ -32,54 +32,7 @@
   go(fun);
   ```
 
-- **[so](https://github.com/idealvin/co/tree/master/src/so)**
-
-  `so` 是基于协程的 C++ 网络库，可轻松实现同时支持 `ipv4` 与 `ipv6` 的网络程序，包含如下几个模块:
-  - tcp 模块, 支持一般的 tcp 编程.
-  - http 模块, 支持基本的 http 编程.
-  - rpc 模块，基于 json 的 rpc 框架，单线程 qps 可达到 12w+.
-
-  - 实现静态 **web server**:
-  ```cpp
-  #include "co/flag.h"
-  #include "co/log.h"
-  #include "co/so.h"
-
-  DEF_string(d, ".", "root dir"); // 指定 web server 根目录
-
-  int main(int argc, char** argv) {
-      flag::init(argc, argv);
-      log::init();
-
-      so::easy(FLG_d.c_str()); // mum never have to worry again
-
-      return 0;
-  }
-  ```
-
-  - 实现一般的 http server:
-  ```cpp
-  http::Server serv("0.0.0.0", 80);
-
-  serv.on_req(
-      [](const http::Req& req, http::Res& res) {
-          if (req.is_method_get()) {
-              if (req.url() == "/hello") {
-                  res.set_status(200);
-                  res.set_body("hello world");
-              } else {
-                  res.set_status(404);
-              }
-          } else {
-              res.set_status(501);
-          }
-      }
-  );
-
-  serv.start();
-  ```
-
-- **[log](https://github.com/idealvin/co/blob/master/src/log.cc)**
+- **[log](https://github.com/suilteam/co/blob/master/src/log.cc)**
 
   `log` 是一个超级快的本地日志系统，打印日志比 `printf` 更安全:
   ```cpp
@@ -96,11 +49,11 @@
   | mac SSD | 17MB/s | 450MB/s |
   | linux SSD | 54MB/s | 1023MB/s |
   
-  上表是单线程连续打印 100 万条 info 日志(每条 50 字节左右)的测试结果，[co/log](https://github.com/idealvin/co/blob/master/include/log.h) 几乎快了 [glog](https://github.com/google/glog) 两个数量级。
+  上表是单线程连续打印 100 万条 info 日志(每条 50 字节左右)的测试结果，[co/log](https://github.com/suilteam/co/blob/master/include/log.h) 几乎快了 [glog](https://github.com/google/glog) 两个数量级。
 
-  为何如此快？一是 log 库内部基于比 `sprintf` 快 8-25 倍的 [fastream](https://github.com/idealvin/co/blob/master/include/fastream.h) 实现，二是 log 库几乎没有什么内存分配操作。
+  为何如此快？一是 log 库内部基于比 `sprintf` 快 8-25 倍的 [fastream](https://github.com/suilteam/co/blob/master/include/fastream.h) 实现，二是 log 库几乎没有什么内存分配操作。
 
-- **[flag](https://github.com/idealvin/co/blob/master/src/flag.cc)**
+- **[flag](https://github.com/suilteam/co/blob/master/src/flag.cc)**
 
   `flag` 是一个方便、易用的命令行及配置文件解析库，支持自动生成配置文件。
 
@@ -127,30 +80,30 @@
   ./xx -config=xx.conf          # 从配置文件启动
   ```
 
-- **[json](https://github.com/idealvin/co/blob/master/src/json.cc)**
+- **[json](https://github.com/suilteam/co/blob/master/src/json.cc)**
 
   `json` 是一个速度堪比 [rapidjson](https://github.com/Tencent/rapidjson) 的 json 库，如果使用 [jemalloc](https://github.com/jemalloc/jemalloc)，`parse` 与 `stringify` 的性能会进一步提升。此库对 json 标准的支持不如 rapidjson 全面，但能满足程序员的基本需求，且更容易使用。
 
 
 ## 代码构成
 
-- [co/include](https://github.com/idealvin/co/tree/master/include)  
+- [co/include](https://github.com/suilteam/co/tree/master/include)  
 
   `libco` 的头文件。
 
-- [co/src](https://github.com/idealvin/co/tree/master/src)  
+- [co/src](https://github.com/suilteam/co/tree/master/src)  
 
   `libco` 的源代码。
 
-- [co/test](https://github.com/idealvin/co/tree/master/test)  
+- [co/test](https://github.com/suilteam/co/tree/master/test)  
 
   一些测试代码，每个 `.cc` 文件都会编译成一个单独的测试程序。
 
-- [co/unitest](https://github.com/idealvin/co/tree/master/unitest)  
+- [co/unitest](https://github.com/suilteam/co/tree/master/unitest)  
 
   一些单元测试代码，每个 `.cc` 文件对应不同的测试单元，所有代码都会编译到单个测试程序中。
 
-- [co/gen](https://github.com/idealvin/co/tree/master/gen)  
+- [co/gen](https://github.com/suilteam/co/tree/master/gen)  
 
   代码生成工具，根据 proto 文件，自动生成 rpc 框架代码。
 
@@ -192,7 +145,7 @@
 
 - 编译及运行 unitest 代码
 
-  [co/unitest](https://github.com/idealvin/co/tree/master/unitest) 是单元测试代码，用于检验 libco 库功能的正确性。
+  [co/unitest](https://github.com/suilteam/co/tree/master/unitest) 是单元测试代码，用于检验 libco 库功能的正确性。
 
   ```sh
   xmake build unitest     # build 可以简写为 -b
@@ -204,7 +157,7 @@
 
 - 编译及运行 test 代码
 
-  [co/test](https://github.com/idealvin/co/tree/master/test) 包含了一些测试代码。co/test 目录下增加 `xxx.cc` 源文件，然后在 co 根目录下执行 `xmake build xxx` 即可构建。
+  [co/test](https://github.com/suilteam/co/tree/master/test) 包含了一些测试代码。co/test 目录下增加 `xxx.cc` 源文件，然后在 co 根目录下执行 `xmake build xxx` 即可构建。
 
   ```sh
   xmake build flag             # 编译 flag.cc
@@ -237,7 +190,7 @@
   gen hello_world.proto
   ```
 
-  `proto` 文件格式可以参考 [hello_world.proto](https://github.com/idealvin/co/blob/master/test/__/rpc/hello_world.proto)。
+  `proto` 文件格式可以参考 [hello_world.proto](https://github.com/suilteam/co/blob/master/test/__/rpc/hello_world.proto)。
 
 - 安装
 
@@ -267,12 +220,12 @@ make install
 
 ## License
 
-`CO` 以 `MIT` License 发布. `CO` 包含了一些其他项目的代码，可能使用了与 `CO` 不同的 License，详情见 [LICENSE.md](https://github.com/idealvin/co/blob/master/LICENSE.md)。
+`CO` 以 `MIT` License 发布. `CO` 包含了一些其他项目的代码，可能使用了与 `CO` 不同的 License，详情见 [LICENSE.md](https://github.com/suilteam/co/blob/master/LICENSE.md)。
 
 
 ## 特别致谢
 
-- [co/context](https://github.com/idealvin/co/tree/master/src/co/context) 的相关代码取自 [ruki](https://github.com/waruqi) 的 [tbox](https://github.com/tboox/tbox)，特别表示感谢！
+- [co/context](https://github.com/suilteam/co/tree/master/src/co/context) 的相关代码取自 [ruki](https://github.com/waruqi) 的 [tbox](https://github.com/tboox/tbox)，特别表示感谢！
 - co 英文参考文档，由 [Leedehai](https://github.com/Leedehai)(1-10)，[daidai21](https://github.com/daidai21)(11-15) 与 [google](https://translate.google.cn/) 翻译，特别表示感谢！
 - [ruki](https://github.com/waruqi) 帮忙改进了 xmake 编译脚本，特别表示感谢！
 - [izhengfan](https://github.com/izhengfan) 提供了 cmake 编译脚本，特别表示感谢！
@@ -280,6 +233,6 @@ make install
 
 ## 友情合作
 
-- 有问题请提交到 [github](https://github.com/idealvin/co/).
+- 有问题请提交到 [github](https://github.com/suilteam/co/).
 - 赞助、商务合作请联系 `idealvin at qq.com`.
 - [Donate](https://idealvin.github.io/donate/)

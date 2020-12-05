@@ -13,16 +13,16 @@
 
 ## Highlights
 
-- **[co](https://github.com/idealvin/co/tree/master/src/co)**
+- **[co](https://github.com/suilteam/co/tree/master/src/co)**
 
   `co` is a [golang-style](https://github.com/golang/go) C++ coroutine library with the following features:
 
   - Support multi-thread scheduling, the default number of threads is the number of system CPU cores.
   - Coroutines share the thread stack (the default size is 1MB), and the memory footprint is extremely low, a single machine can easily create millions of coroutines.
   - Support system api hook (Linux & Mac).
-  - Support coroutine lock [co::Mutex](https://github.com/idealvin/co/blob/master/src/co/impl/co.cc).
-  - Support coroutine synchronization event [co::Event](https://github.com/idealvin/co/blob/master/src/co/impl/co.cc).
-  - Support coroutine pool [co::Pool](https://github.com/idealvin/co/blob/master/src/co/impl/co.cc).
+  - Support coroutine lock [co::Mutex](https://github.com/suilteam/co/blob/master/src/co/impl/co.cc).
+  - Support coroutine synchronization event [co::Event](https://github.com/suilteam/co/blob/master/src/co/impl/co.cc).
+  - Support coroutine pool [co::Pool](https://github.com/suilteam/co/blob/master/src/co/impl/co.cc).
 
   -  create coroutine with `go()`:
   ```cpp
@@ -33,55 +33,7 @@
   go(fun);
   ```
 
-- **[so](https://github.com/idealvin/co/tree/master/src/so)**
-
-  `so` is a C++ network library based on coroutines. You can easily write network programs that support both `ipv4` and `ipv6` with this library. It includes the following modules:
-
-  - tcp module, supports general tcp programming.
-  - http module, supports basic http programming.
-  - rpc module, implements a rpc framework based on json, single-threaded qps can reach 120k+.
-
-  - Write a **static web server**:
-  ```cpp
-  #include "co/flag.h"
-  #include "co/log.h"
-  #include "co/so.h"
-
-  DEF_string(d, ".", "root dir"); // Specify the root directory of the web server
-
-  int main(int argc, char** argv) {
-      flag::init(argc, argv);
-      log::init();
-
-      so::easy(FLG_d.c_str()); // mum never have to worry again
-
-      return 0;
-  }
-  ```
-
-  - Write a general http server
-  ```cpp
-  http::Server serv("0.0.0.0", 80);
-
-  serv.on_req(
-      [](const http::Req& req, http::Res& res) {
-          if (req.is_method_get()) {
-              if (req.url() == "/hello") {
-                  res.set_status(200);
-                  res.set_body("hello world");
-              } else {
-                  res.set_status(404);
-              }
-          } else {
-              res.set_status(501);
-          }
-      }
-  );
-
-  serv.start();
-  ```
-
-- **[log](https://github.com/idealvin/co/blob/master/src/log.cc)**
+- **[log](https://github.com/suilteam/co/blob/master/src/log.cc)**
 
   `log` is a super fast local logging system, printing logs is safer than `printf`:
   ```cpp
@@ -98,11 +50,11 @@
   | mac SSD | 17MB/s | 450MB/s |
   | linux SSD | 54MB/s | 1023MB/s |
   
-  The above table is the test result of one million info logs (about 50 bytes each) continuously printed by a single thread. The [co/log](https://github.com/idealvin/co/blob/master/include/log.h) is almost two orders of magnitude faster than [glog](https://github.com/google/glog).
+  The above table is the test result of one million info logs (about 50 bytes each) continuously printed by a single thread. The [co/log](https://github.com/suilteam/co/blob/master/include/log.h) is almost two orders of magnitude faster than [glog](https://github.com/google/glog).
 
-  Why is it so fast? The first is that it is based on [fastream](https://github.com/idealvin/co/blob/master/include/fastream.h) that is 8-25 times faster than `sprintf`. The second is that it has almost no memory allocation operations.
+  Why is it so fast? The first is that it is based on [fastream](https://github.com/suilteam/co/blob/master/include/fastream.h) that is 8-25 times faster than `sprintf`. The second is that it has almost no memory allocation operations.
 
-- **[flag](https://github.com/idealvin/co/blob/master/src/flag.cc)**
+- **[flag](https://github.com/suilteam/co/blob/master/src/flag.cc)**
 
   `flag` is a command line and configuration file parsing library that supports automatic generation of configuration files.
 
@@ -129,26 +81,26 @@
   ./xx -config=xx.conf         # start from configuration file
   ```
 
-- **[json](https://github.com/idealvin/co/blob/master/src/json.cc)**
+- **[json](https://github.com/suilteam/co/blob/master/src/json.cc)**
 
   `json` is a json library comparable to [rapidjson](https://github.com/Tencent/rapidjson), if you use [jemalloc](https://github.com/jemalloc/jemalloc), the performance of `parse` and `stringify` will be further improved. This library's support for the json standard is not as comprehensive as rapidjson, but it can meet the basic needs of programmers and is easier to use.
 
 
 ## Components
 
-- [co/include](https://github.com/idealvin/co/tree/master/include)  
+- [co/include](https://github.com/suilteam/co/tree/master/include)  
   Header files of `libco`.
 
-- [co/src](https://github.com/idealvin/co/tree/master/src)  
+- [co/src](https://github.com/suilteam/co/tree/master/src)  
   Source files of `libco`.
 
-- [co/test](https://github.com/idealvin/co/tree/master/test)  
+- [co/test](https://github.com/suilteam/co/tree/master/test)  
   Some test code, each `.cc` file will be compiled into a separate test program.
 
-- [co/unitest](https://github.com/idealvin/co/tree/master/unitest)  
+- [co/unitest](https://github.com/suilteam/co/tree/master/unitest)  
   Some unit test code, each `.cc` file corresponds to a different test unit, and all code is compiled into a single test program.
 
-- [co/gen](https://github.com/idealvin/co/tree/master/gen)  
+- [co/gen](https://github.com/suilteam/co/tree/master/gen)  
   A code generation tool automatically generates rpc framework code according to the `proto` file.
 
 
@@ -190,7 +142,7 @@
 
 - Build and run unitest code
 
-  [co/unitest](https://github.com/idealvin/co/tree/master/unitest) is unit test code that verifies the correctness of the functionality of the base library.
+  [co/unitest](https://github.com/suilteam/co/tree/master/unitest) is unit test code that verifies the correctness of the functionality of the base library.
 
   ```sh
   xmake build unitest    # build can be abbreviated as -b
@@ -202,7 +154,7 @@
 
 - Build and run test code
 
-  [co/test](https://github.com/idealvin/co/tree/master/test) contains some test code. You can easily add a `xxx.cc` source file in the `co/test` directory, and then execute `xmake build xxx` to build it.
+  [co/test](https://github.com/suilteam/co/tree/master/test) contains some test code. You can easily add a `xxx.cc` source file in the `co/test` directory, and then execute `xmake build xxx` to build it.
 
   ```sh
   xmake build flag             # flag.cc
@@ -235,7 +187,7 @@
   gen hello_world.proto
   ```
 
-  Proto file format can refer to [hello_world.proto](https://github.com/idealvin/co/blob/master/test/__/rpc/hello_world.proto).
+  Proto file format can refer to [hello_world.proto](https://github.com/suilteam/co/blob/master/test/__/rpc/hello_world.proto).
 
 - Installation
 
@@ -265,12 +217,12 @@ make install
 
 ## License
 
-`CO` is licensed under the `MIT` License. It includes code from some other projects, which have their own licenses, see details in [LICENSE.md](https://github.com/idealvin/co/blob/master/LICENSE.md).
+`CO` is licensed under the `MIT` License. It includes code from some other projects, which have their own licenses, see details in [LICENSE.md](https://github.com/suilteam/co/blob/master/LICENSE.md).
 
 
 ## Special thanks
 
-- The code of [co/context](https://github.com/idealvin/co/tree/master/src/co/context) is from [tbox](https://github.com/tboox/tbox) by [ruki](https://github.com/waruqi), special thanks!
+- The code of [co/context](https://github.com/suilteam/co/tree/master/src/co/context) is from [tbox](https://github.com/tboox/tbox) by [ruki](https://github.com/waruqi), special thanks!
 - The English reference documents of CO are translated by [Leedehai](https://github.com/Leedehai) (1-10), [daidai21](https://github.com/daidai21) (11-15) and [google](https://translate.google.cn/), special thanks!
 - [ruki](https://github.com/waruqi) has helped to improve the xmake compilation scripts, thanks in particular!
 - [izhengfan](https://github.com/izhengfan) provided cmake compilation scripts, thank you very much!
