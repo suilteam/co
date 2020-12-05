@@ -3,6 +3,7 @@
 #include "fast.h"
 #include "hash/murmur_hash.h"
 #include <ostream>
+#include <string_view>
 
 class fastring : public fast::stream {
   public:
@@ -255,6 +256,11 @@ class fastring : public fast::stream {
 
     void shrink() {
         if (_size + 1 < _cap) this->swap(fastring(*this));
+    }
+
+    std::string_view view() const {
+        if (!empty()) return std::string_view{_p, _size};
+        return {};
     }
 
   private:

@@ -74,8 +74,9 @@ cmake-build-*
 .xmake
 build
 lib
+logs
 
 # IDE files
-.idea
-.vscode
+.idea/
+.vscode/
 
