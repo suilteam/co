@@ -50,6 +50,52 @@ DEF_test(str) {
         EXPECT_EQ(v[2], "y||");
     }
 
+    DEF_case(tokenize) {
+        auto v = str::tokenize("x||y", "|");
+        EXPECT_EQ(v.size(), 3);
+        EXPECT_EQ(v[0], "x");
+        EXPECT_EQ(v[1], "");
+        EXPECT_EQ(v[2], "y");
+
+        auto u = str::tokenize("x||y", "|");
+        EXPECT(u == v);
+
+        v = str::tokenize("x||y", "|", 1);
+        EXPECT_EQ(v[0], "x");
+        EXPECT_EQ(v[1], "|y");
+
+        u = str::tokenize("x||y", "|", 1);
+        EXPECT(u == v);
+
+        v = str::tokenize("x y", " ");
+        EXPECT_EQ(v.size(), 2);
+        EXPECT_EQ(v[0], "x");
+        EXPECT_EQ(v[1], "y");
+
+        v = str::tokenize("\nx\ny\n", "\n");
+        EXPECT_EQ(v.size(), 3);
+        EXPECT_EQ(v[0], "");
+        EXPECT_EQ(v[1], "x");
+        EXPECT_EQ(v[2], "y");
+
+        u = str::tokenize("\nx\ny\n", "\n");
+        EXPECT(u == v);
+
+        v = str::tokenize("||x||y||", "||");
+        EXPECT_EQ(v.size(), 3);
+        EXPECT_EQ(v[0], "");
+        EXPECT_EQ(v[1], "x");
+        EXPECT_EQ(v[2], "y");
+
+        u = str::tokenize("||x||y||", "||");
+        EXPECT(u == v);
+
+        v = str::tokenize("||x||y||", "||", 2);
+        EXPECT_EQ(v[0], "");
+        EXPECT_EQ(v[1], "x");
+        EXPECT_EQ(v[2], "y||");
+    }
+
     DEF_case(replace) {
         EXPECT_EQ(str::replace("$@xx$@", "$@", "#"), "#xx#");
         EXPECT_EQ(str::replace("$@xx$@", "$@", "#", 1), "#xx$@");

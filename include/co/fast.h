@@ -3,12 +3,13 @@
 #include "def.h"
 #include "__/dtoa_milo.h"
 
-#include <assert.h>
-#include <stddef.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
+#include <cassert>
+#include <cstddef>
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
 #include <string>
+#include <string_view>
 #include <utility>
 
 namespace fast {
@@ -137,6 +138,10 @@ class stream {
         return this->_Append(s.data(), s.size());
     }
 
+    stream& append(const std::string_view& s) {
+        return this->_Append(s.data(), s.size());
+    }
+
     stream& append(size_t n, char c) {
         this->_Ensure(n);
         memset(_p + _size, c, n);
@@ -246,6 +251,10 @@ class stream {
     }
 
     stream& operator<<(const std::string& v) {
+        return this->_Append(v.data(), v.size());
+    }
+
+    stream& operator<<(const std::string_view& v) {
         return this->_Append(v.data(), v.size());
     }
 

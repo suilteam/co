@@ -5,6 +5,10 @@
 #include <ostream>
 #include <string_view>
 
+namespace co {
+    using strview = std::string_view;
+}
+
 class fastring : public fast::stream {
   public:
     static constexpr size_t npos = (size_t)-1;
@@ -68,6 +72,10 @@ class fastring : public fast::stream {
         return (fastring&) fast::stream::append(s);
     }
 
+    fastring& append(const std::string_view& s) {
+        return (fastring&) fast::stream::append(s);
+    }
+
     fastring& append(size_t n, char c) {
         return (fastring&) fast::stream::append(n, c);
     }
@@ -93,6 +101,10 @@ class fastring : public fast::stream {
         return this->append(s);
     }
 
+    fastring& operator+=(const std::string_view& s) {
+        return this->append(s);
+    }
+
     fastring& operator+=(char c) {
         return this->append(c);
     }
@@ -102,6 +114,10 @@ class fastring : public fast::stream {
     }
 
     fastring& operator<<(const std::string& s) {
+        return (fastring&) fast::stream::operator<<(s);
+    }
+
+    fastring& operator<<(const std::string_view& s) {
         return (fastring&) fast::stream::operator<<(s);
     }
 

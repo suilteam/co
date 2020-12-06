@@ -43,6 +43,10 @@ class fastream : public fast::stream {
         return (fastream&) fast::stream::append(s);
     }
 
+    fastream& append(const std::string_view& s) {
+        return (fastream&) fast::stream::append(s);
+    }
+
     fastream& append(size_t n, char c) {
         return (fastream&) fast::stream::append(n, c);
     }
@@ -69,6 +73,10 @@ class fastream : public fast::stream {
     }
 
     fastream& operator<<(const std::string& s) {
+        return (fastream&) fast::stream::operator<<(s);
+    }
+
+    fastream& operator<<(const std::string_view& s) {
         return (fastream&) fast::stream::operator<<(s);
     }
 

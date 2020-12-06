@@ -17,12 +17,12 @@ std::vector<fastring> split(const char* s, char c, uint32 maxsplit) {
     const char* from = s;
 
     while ((p = strchr(from, c))) {
-        v.push_back(fastring(from, p - from));
+        v.emplace_back(from, p - from);
         from = p + 1;
         if (v.size() == maxsplit) break;
     }
 
-    if (from < s + strlen(s)) v.push_back(fastring(from));
+    if (from < s + strlen(s)) v.emplace_back(from);
     return v;
 }
 
@@ -34,12 +34,12 @@ std::vector<fastring> split(const fastring& s, char c, uint32 maxsplit) {
     const char* end = from + s.size();
 
     while ((p = (const char*) memchr(from, c, end - from))) {
-        v.push_back(fastring(from, p - from));
+        v.emplace_back(from, p - from);
         from = p + 1;
         if (v.size() == maxsplit) break;
     }
 
-    if (from < end) v.push_back(fastring(from, end - from));
+    if (from < end) v.emplace_back(from, end - from);
     return v;
 }
 
@@ -51,12 +51,33 @@ std::vector<fastring> split(const char* s, const char* c, uint32 maxsplit) {
     size_t n = strlen(c);
 
     while ((p = strstr(from, c))) {
-        v.push_back(fastring(from, p - from));
+        v.emplace_back(from, p - from);
         from = p + n;
         if (v.size() == maxsplit) break;
     }
 
-    if (from < s + strlen(s)) v.push_back(fastring(from));
+    if (from < s + strlen(s)) v.emplace_back(from);
+    return v;
+}
+
+std::vector<co::strview> tokenize(const co::strview& sv, const char* c, uint32 maxsplit)
+{
+    std::vector<co::strview> v;
+
+    const char* p;
+    const char* from = sv.data();
+    size_t n = strlen(c);
+
+    while ((p = strstr(from, c))) {
+        v.emplace_back(from, p - from);
+        from = p + n;
+        if (v.size() == maxsplit) break;
+    }
+
+    if (from < sv.data() + sv.size()) {
+        auto size = sv.size() - (from - sv.data());
+        v.emplace_back(from, size);
+    }
     return v;
 }
 

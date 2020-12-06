@@ -17,6 +17,7 @@ namespace str {
 std::vector<fastring> split(const char* s, char c, uint32 maxsplit=0);
 std::vector<fastring> split(const fastring& s, char c, uint32 maxsplit=0);
 std::vector<fastring> split(const char* s, const char* c, uint32 maxsplit=0);
+std::vector<co::strview> tokenize(const co::strview& sv, const char* c, uint32 maxsplit = 0);
 
 inline std::vector<fastring> split(const fastring& s, const char* c, uint32 maxsplit=0) {
     return split(s.c_str(), c, maxsplit);
