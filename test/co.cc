@@ -11,7 +11,7 @@ int n = 0;
 
 void f1() {
     ev.wait();
-    CLOG << "f1()";
+    CLOG << "f1() " << co::inco();
     {
         co::MutexGuard g(mtx);
         ++v;
@@ -46,6 +46,6 @@ int main(int argc, char** argv) {
 
     CLOG << "v: " << v;
     CLOG << "n: " << n;
-
+    CLOG << "inco:\n " << co::inco();
     return 0;
 }

@@ -382,6 +382,24 @@ inline const char* strerror() {
     return co::strerror(co::error());
 }
 
+constexpr char EV_READ{'r'};
+constexpr char EV_WRITE{'w'};
+
+/**
+ * Wait for an IO event on a file descriptor
+ * @param fd the file descriptor to wait for an event on
+ * @param ev the type of event to wait for, one of EV_READ, EV_WRITE
+ * @param ms the amount of time in milliseconds to wait for the event
+ * @return true if the event was received within timeout, false otherwise
+ */
+bool fdwait(int fd, char ev, int64 ms);
+
+/**
+ * @return true when the calling code is in coroutine,
+ * false otherwise
+ */
+bool inco();
+
 } // namespace co
 
 using co::go;

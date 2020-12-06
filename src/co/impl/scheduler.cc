@@ -142,12 +142,12 @@ void Scheduler::loop() {
             }
         } while (0);
 
-        SOLOG << "> check timedout tasks..";
+        SOLOG << "> check timed out tasks..";
         do {
             _wait_ms = _timer_mgr.check_timeout(ready_tasks);
 
             if (!ready_tasks.empty()) {
-                SOLOG << ">> resume timedout tasks, num: " << ready_tasks.size();
+                SOLOG << ">> resume timed out tasks, num: " << ready_tasks.size();
                 _timeout = true;
                 for (size_t i = 0; i < ready_tasks.size(); ++i) {
                     this->resume(ready_tasks[i]);

@@ -26,5 +26,5 @@
 #include "co.h"
 #include "json.h"
 
-#include <time.h>
+#include <ctime>
 #include <algorithm>

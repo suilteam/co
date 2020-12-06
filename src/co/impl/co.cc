@@ -1,6 +1,7 @@
 #include "co/co.h"
 #include "co/os.h"
 #include "scheduler.h"
+#include "io_event.h"
 #include <deque>
 
 namespace co {
@@ -23,11 +24,27 @@ int max_sched_num() {
 }
 
 int sched_id() {
-    return gSched ? gSched->id() : -1;
+    return gSched ? int(gSched->id()) : -1;
 }
 
 int coroutine_id() {
     return (gSched && gSched->running()) ? gSched->running()->id : -1;
+}
+
+bool fdwait(int fd, char ev, int64 ms) {
+    CHECK(gSched) << "must be called in coroutine..";
+    if (unlikely(fd < 0)) {
+        errno = EINVAL;
+        return false;
+    } else {
+        IoEvent ioEvent(fd, (ev == EV_READ)? EV_read: EV_write);
+        return ioEvent.wait(ms);
+    }
+}
+
+bool inco() {
+    if (unlikely(gSched == nullptr)) return false;
+    return true;
 }
 
 class EventImpl {
